@@ -22,6 +22,12 @@ namespace WebApplication4.Modules
             Post["/"] = CreateUser;
             Get["/setpassword/{token:string}"] = _ => View["setpassword"];
             Get["/confirm/{user}/{token}"] = paramz => ConfirmEmail(paramz);
+            Get["/{user}/token"] = paramz => GenerateToken(paramz);
+        }
+
+        private dynamic GenerateToken(dynamic paramz)
+        {
+            return Response.AsJson(_userManager.GenerateEmailConfirmationToken((string)paramz.user));
         }
 
         private dynamic ConfirmEmail(dynamic paramz)

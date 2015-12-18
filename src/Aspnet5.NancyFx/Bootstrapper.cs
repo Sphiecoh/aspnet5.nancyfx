@@ -37,10 +37,11 @@ namespace WebApplication4
             var store = new UserStore<User>(new UsersContext<User>(users));
 
             var usermanager = new UserManager<User>(store);
-            usermanager.UserTokenProvider = new TotpSecurityStampBasedTokenProvider<User,string>();
+            usermanager.UserTokenProvider = new TotpSecurityStampBasedTokenProvider<User, string>() {};
             usermanager.UserLockoutEnabledByDefault = true;
             usermanager.MaxFailedAccessAttemptsBeforeLockout = 3;
             usermanager.UserValidator = new UserValidator<User>(usermanager) { AllowOnlyAlphanumericUserNames = false };
+          
             var roleStore = new RoleStore<IdentityRole>(new RolesContext<IdentityRole>(roles));
             IndexChecks.EnsureUniqueIndexOnEmail(users);
             IndexChecks.EnsureUniqueIndexOnRoleName(roles);
