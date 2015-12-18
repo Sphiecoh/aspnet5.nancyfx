@@ -1,4 +1,4 @@
-﻿using MongoDB.AspNet.Identity;
+﻿using AspNet.Identity.MongoDB;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,9 +24,6 @@ namespace WebApplication4.Models
         /// Subscribe to notifications
         /// </summary>
         public bool EmailNotificationsEnabled { get; set; }
-        /// <summary>
-        /// User email address
-        /// </summary>
-        public string EmailAddress { get; set; }
+              
     }
 }

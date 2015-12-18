@@ -20,13 +20,30 @@ namespace WebApplication4.Modules
             _config = config;
             
             Post["/"] = CreateUser;
+            Get["/setpassword/{token:string}"] = _ => View["setpassword"];
+            Get["/confirm/{user}/{token}"] = paramz => ConfirmEmail(paramz);
+        }
+
+        private dynamic ConfirmEmail(dynamic paramz)
+        {
+            var token = paramz.token;
+            var id = paramz.user;
+            IdentityResult result = _userManager.ConfirmEmailAsync(id, token).Result;
+            return Negotiate.WithModel(result);
+
         }
 
         private dynamic CreateUser(dynamic arg)
         {
             var dto = this.Bind<UserDto>();
-            var user = new User { FullName = dto.FullName, EmailAddress = dto.EmailAddress, UserName = dto.EmailAddress };
+            var user = new User { FullName = dto.FullName,UserName = dto.EmailAddress };
             var result = _userManager.Create(user);
+            if(result.Succeeded)
+            {
+                _userManager.SetEmail(user.Id, dto.EmailAddress);
+                var token = _userManager.GenerateEmailConfirmationToken(user.Id);
+                return Negotiate.WithModel(new { token, user.Id });
+            }
             return Negotiate.WithModel(result);
 
         }

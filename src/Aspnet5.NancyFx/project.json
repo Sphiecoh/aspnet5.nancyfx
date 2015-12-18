@@ -5,10 +5,11 @@
   },
 
   "dependencies": {
+    "Microsoft.AspNet.Authorization": "1.0.0-rc1-final",
     "Microsoft.AspNet.IISPlatformHandler": "1.0.0-rc1-final",
     "Microsoft.AspNet.Owin": "1.0.0-rc1-final",
     "Microsoft.AspNet.Server.Kestrel": "1.0.0-rc1-final",
-    "MongoDB.AspNet.Identity": "1.0.5"
+    "AspNet.Identity.MongoDB-2": "2.0.1"
   },
 
   "commands": {
