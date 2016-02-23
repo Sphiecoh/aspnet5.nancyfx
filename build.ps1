@@ -34,14 +34,14 @@ if ((Get-Item $ReleaseFolder -ErrorAction SilentlyContinue) -ne $null)
 }
 
 # Set the version number in package.json
-$ProjectJsonPath = Join-Path -Path $SolutionRoot -ChildPath "src\Smidge\project.json"
+$ProjectJsonPath = Join-Path -Path $SolutionRoot -ChildPath "src\aspnet5.nancyfx\project.json"
 (gc -Path $ProjectJsonPath) `
 	-replace "(?<=`"version`":\s`")[.\w-]*(?=`",)", "$ReleaseVersionNumber$PreReleaseName" |
 	sc -Path $ProjectJsonPath -Encoding UTF8
 # Set the copyright
 $DateYear = (Get-Date).year
 (gc -Path $ProjectJsonPath) `
-	-replace "(?<=`"copyright`":\s`")[\w\s©]*(?=`",)", "Copyright © Shannon Deminick $DateYear" |
+	-replace "(?<=`"copyright`":\s`")[\w\s©]*(?=`",)", "Copyright © Sifiso Shezi $DateYear" |
 	sc -Path $ProjectJsonPath -Encoding UTF8
 
 # Build the proj in release mode
