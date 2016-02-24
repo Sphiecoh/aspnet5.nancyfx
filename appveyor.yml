@@ -1,7 +1,9 @@
 init:
   - git config --global core.autocrlf true
 build_script:
-  - build.cmd verify
+  - ps: .\build.ps1 $env:APPVEYOR_BUILD_VERSION ''
 clone_depth: 1
-test: off
-deploy: off
+version: 0.0.{build}
+nuget:
+  project_feed: true
+
