@@ -15,14 +15,27 @@ $PSScriptFilePath = (Get-Item $MyInvocation.MyCommand.Path).FullName
 
 $SolutionRoot = Split-Path -Path $PSScriptFilePath -Parent
 
+# load up the global.json so we can find the DNX version
+$globalJson = Get-Content -Path $PSScriptRoot\global.json -Raw -ErrorAction Ignore | ConvertFrom-Json -ErrorAction Ignore
+
+if($globalJson)
+{
+    $dnxVersion = $globalJson.sdk.version
+}
+else
+{
+    Write-Warning "Unable to locate global.json to determine using 'latest'"
+    $dnxVersion = "latest"
+}
+
 $DNU = "dnu"
 $DNVM = "dnvm"
 
 # ensure the correct version
-& $DNVM install 1.0.0-rc1-update1
+& $DNVM install $dnxVersion
 
 # use the correct version
-& $DNVM use 1.0.0-rc1-update1
+& $DNVM use $dnxVersion
 
 # Make sure we don't have a release folder for this version already
 $BuildFolder = Join-Path -Path $SolutionRoot -ChildPath "build";
@@ -33,33 +46,39 @@ if ((Get-Item $ReleaseFolder -ErrorAction SilentlyContinue) -ne $null)
 	Remove-Item $ReleaseFolder -Recurse
 }
 
+$projects = Get-ChildItem -Path $PSScriptRoot -Filter project.json -recurse
+[int]$errors = 0
+$workingDir = Get-Location;
+foreach($project in $projects)
+{
+   Set-Location $project.DirectoryName
 # Set the version number in package.json
-$ProjectJsonPath = Join-Path -Path $SolutionRoot -ChildPath "src\Aspnet5.NancyFx\project.json"
-(gc -Path $ProjectJsonPath) `
+(gc -Path $project) `
 	-replace "(?<=`"version`":\s`")[.\w-]*(?=`",)", "$ReleaseVersionNumber$PreReleaseName" |
-	sc -Path $ProjectJsonPath -Encoding UTF8
+	sc -Path $project -Encoding UTF8
 # Set the copyright
 $DateYear = (Get-Date).year
-(gc -Path $ProjectJsonPath) `
+(gc -Path $project) `
 	-replace "(?<=`"copyright`":\s`")[\w\s©]*(?=`",)", "Copyright © Sifiso Shezi $DateYear" |
-	sc -Path $ProjectJsonPath -Encoding UTF8
+	sc -Path $project -Encoding UTF8
 
 # Build the proj in release mode
 
-& $DNU restore "$ProjectJsonPath"
+& $DNU restore 2>&1
 if (-not $?)
 {
 	throw "The DNU restore process returned an error code."
 }
 
-& $DNU build "$ProjectJsonPath"
+& $DNU build 2>&1
 if (-not $?)
 {
 	throw "The DNU build process returned an error code."
 }
 
-& $DNU pack "$ProjectJsonPath" --configuration Release --out "$ReleaseFolder"
+& $DNU pack 2>&1 --configuration Release --out "$ReleaseFolder"
 if (-not $?)
 {
 	throw "The DNU pack process returned an error code."
+}
 }
