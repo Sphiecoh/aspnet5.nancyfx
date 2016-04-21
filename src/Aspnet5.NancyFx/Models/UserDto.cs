@@ -10,5 +10,6 @@ namespace WebApplication4.Models
         public string Email { get; set; }
         public string EmailAddress { get; set; }
         public string FullName { get; set; }
+        public string Password { get; set; }
     }
 }

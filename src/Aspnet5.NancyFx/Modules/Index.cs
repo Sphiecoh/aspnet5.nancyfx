@@ -9,7 +9,7 @@ namespace WebApplication4.Modules
     {
         public Index()
         {
-            Get["/"] = _ =>  "sdsds"; 
+            Get["/"] = (_,t) => Task.FromResult<dynamic>("sdsds"); 
         }
     }
 }

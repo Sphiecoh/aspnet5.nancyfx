@@ -19,7 +19,7 @@
   "frameworks": {
     "dnx451": {
       "dependencies": {
-        "Nancy": "1.4.2"
+        "Nancy": "2.0.0-alpha"
       }
     },
     },
