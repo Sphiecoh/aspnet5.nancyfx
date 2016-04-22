@@ -1,0 +1,15 @@
+﻿{
+  "dependencies": {
+    "Aspnet5.NancyFx": "1.0.0-*",
+    "GenFu": "1.1.0",
+    "Nancy.Testing": "2.0.0-alpha",
+    "xunit": "2.1.0",
+    "xunit.runner.dnx": "2.1.0-rc1-build204"
+  },
+  "commands": {
+    "test": "xunit.runner.dnx -xml TestResults.xml"
+  },
+  "frameworks": {
+    "dnx451": { }
+  }
+}

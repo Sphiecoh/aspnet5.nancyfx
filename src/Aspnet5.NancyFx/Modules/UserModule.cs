@@ -32,7 +32,11 @@ namespace WebApplication4.Modules
             var token = paramz.token;
             var id = paramz.user;
             IdentityResult result =await _userManager.ConfirmEmailAsync(id, token);
-            return Negotiate.WithModel(result);
+            if (result.Succeeded)
+            {
+                return Negotiate.WithModel(result);
+            }
+            return Negotiate.WithModel(result).WithStatusCode(HttpStatusCode.BadRequest);
 
         }
 
@@ -45,9 +49,9 @@ namespace WebApplication4.Modules
             {
                 await _userManager.SetEmailAsync(user.Id, dto.EmailAddress);
                 var _token =await _userManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                return Negotiate.WithModel(new { _token, user.Id });
+                return Negotiate.WithModel(new { Token = _token, Id = user.Id });
             }
-            return Negotiate.WithModel(result);
+            return Negotiate.WithModel(result).WithStatusCode(HttpStatusCode.UnprocessableEntity);
 
         }
     }
