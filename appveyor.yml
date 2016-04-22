@@ -6,4 +6,7 @@ clone_depth: 1
 version: 0.0.{build}
 nuget:
   project_feed: true
+artifacts:
+  - path: Releases\v$env:APPVEYOR_BUILD_VERSION\**\*.nupkg
+ 
 
