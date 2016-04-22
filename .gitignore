@@ -1,2 +1,3 @@
 src/Aspnet5.NancyFx/project.lock.json
 src/Aspnet5.NancyFx/bin/*
+/build/Releases/*
