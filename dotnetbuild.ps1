@@ -48,7 +48,7 @@ Get-ChildItem -Path . -Filter *.xproj -Recurse | ForEach-Object { Restore-Packag
 # Test for coreclr framework
 Get-ChildItem -Path .\test -Filter *.xproj -Recurse | ForEach-Object {
     Push-Location $_.DirectoryName
-    Test-Projects
+    Test-Projects "net451"
     Pop-Location
 }
 
