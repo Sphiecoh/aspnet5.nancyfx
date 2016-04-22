@@ -1,7 +1,7 @@
 init:
   - git config --global core.autocrlf true
 build_script:
-  - ps: .\build.ps1 $env:APPVEYOR_BUILD_VERSION
+  - ps: .\dotnetbuild.ps1
 clone_depth: 1
 version: 0.0.{build}
 nuget:
