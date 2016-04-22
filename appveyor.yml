@@ -7,6 +7,6 @@ version: 0.0.{build}
 nuget:
   project_feed: true
 artifacts:
-  - path: Releases\v$env:APPVEYOR_BUILD_VERSION\Release\*.nupkg
+  - path: Releases\$env:APPVEYOR_BUILD_VERSION\Release\*.nupkg
  
 
